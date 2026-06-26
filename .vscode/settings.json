@@ -1,0 +1,17 @@
+{
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[css]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "editor.formatOnType": true,
+  "editor.formatOnSave": true,
+  "editor.semanticHighlighting.enabled": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.prettier": "explicit",
+    "source.fixAll.eslint": "explicit"
+  },
+  "js/ts.updateImportsOnFileMove.enabled": "always"
+}

@@ -1,0 +1,11 @@
+/* @import "tailwindcss"; */
+/* @config "../tailwind.config.js"; */
+/* @layer base;
+@layer components;
+@layer utilities; */
+
+/* @import "tailwindcss"; */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
