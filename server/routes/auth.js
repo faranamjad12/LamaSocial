@@ -1,10 +1,10 @@
 // const router = require("express").Router();
 import { Router } from "express";
 import User from "../models/User.js";
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
+import { generateOTP, sendEmail } from "../utils/common.js";
 // import { useNavigate } from "react-router";
-
 const authrouter = Router();
 
 // const navigate = useNavigate();
@@ -92,6 +92,81 @@ authrouter.post("/login", async (req, res) => {
   } catch (err) {
     // console.log(err);
     return res.status(500).json(err);
+  }
+});
+
+authrouter.post("/forgot-password", async (req, res) => {
+  const { email } = req.body;
+  // console.log({ email });
+  // return null;
+  try {
+    const user = await User.findOne({
+      email,
+      // : req.body.email
+    });
+    if (!user) {
+      return res.send({
+        status: false,
+        message: "User not found with this email",
+      });
+    }
+
+    const otp = generateOTP();
+
+    user.otp = otp;
+    user.isOtpVerified = false;
+
+    await user.save();
+
+    const html = `<p>Your OTP code is: <b>${otp}</b></p>`;
+
+    await sendEmail(email, "Password Reset OTP", html);
+
+
+console.log("OTP Code:", otp);
+
+    return res.send({
+      status: true,
+      message: "OTP sent to your email",
+    });
+  } catch (error) {
+    console.log("ERR:", error);
+  }
+
+  
+});
+
+authrouter.post("/reset-password", async (req, res) => {
+  const { email, otp, newPassword } = req.body;
+
+  try {
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.send({
+        status: false,
+        message: "User not found with this email",
+      });
+    }
+    if (user.otp !== otp) {
+      return res.send({
+        status: false,
+        message: "Given OTP is invalid",
+      });
+    }
+
+    const salt = await bcrypt.genSalt(10);
+    const encPass = await bcrypt.hash(newPassword, salt);
+    user.password = encPass;
+    user.isOtpVerified = true;
+    user.otp = null;
+
+    await user.save();
+    return res.send({
+      status: true,
+      message: "Password reset successful",
+    });
+  } catch (error) {
+    console.log("ERR:", error);
   }
 });
 

@@ -2,7 +2,7 @@ import axios from "axios";
 import "./login.css";
 import React from "react";
 import { useForm } from "react-hook-form";
-import { Link, useNavigate } from "react-router";
+import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import AuthLayout from "../../layouts/AuthLayout.jsx";
 
@@ -83,6 +83,7 @@ const Login = () => {
                     {...register("email")}
                   />
                   <input
+                    width="w-full"
                     placeholder="Password"
                     className="loginInput"
                     {...register("password")}
@@ -91,7 +92,13 @@ const Login = () => {
                     Log In
                   </button>
 
-                  <span className="loginForgot">Forgot Password?</span>
+                  <span className="loginForgot">
+                    <Link
+                    to={"/forgot-password"}
+                    >
+                      Forgot Password?
+                    </Link>
+                  </span>
 
                   <button
                     type="button"

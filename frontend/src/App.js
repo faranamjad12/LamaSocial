@@ -3,6 +3,8 @@ import Home from "./pages/home/Home";
 import Login from "./pages/login/Login";
 import Profile from "./pages/profile/Profile";
 import Register from "./pages/register/Register";
+import Forgot_Password from "./pages/forgot_password/Forgot_Password";
+import Reset_Password from "./pages/reset_password/Reset_Password";
 import {
   BrowserRouter as Router,
   Routes,
@@ -34,8 +36,13 @@ const App = () => {
         {/* <Route path="/login" element={<Login />} /> */}
         {/* <Route path="/login">
           <Login />
+          
         </Route> */}
+        {/* <Route path="/f" */}
+        
         <Route path="/register" element={<Register />} />
+        <Route path="/forgot-password" element={<Forgot_Password />} />
+        <Route path="/reset-password" element={<Reset_Password />} />
         {/* <Route path="/register">
           <Register />
         </Route> */}
