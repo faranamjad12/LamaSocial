@@ -27,6 +27,7 @@ const Post = ({ post }) => {
   const userData = JSON.parse(localStorage.getItem("USER"));
   const user = userData?.user;
   // console.log(user._id);
+  // return null;
 
   const [file, setFile] = useState(null);
 
@@ -37,64 +38,65 @@ const Post = ({ post }) => {
   //     setFile(e.target.files[0]);
   //   };
 
-  // const handleUpdate = async (data) => {
-  //   // e.preventDefault();
+  const handleUpdate = async (data) => {
+    // e.preventDefault();
+    // console.log(data);
+    // return null;
+    // Submit data to your Express API here
 
-  //   // Submit data to your Express API here
+    const file1 = file;
+    let img = "";
+    if (file1) {
+      img = await new Promise((resolve) => {
+        const reader = new FileReader();
 
-  //   const file1 = file;
-  //   let img = "";
-  //   if (file1) {
-  //     img = await new Promise((resolve) => {
-  //       const reader = new FileReader();
+        reader.onload = () => {
+          resolve(reader.result.split(",")[1]);
+          //  const base64String = reader.result.split(",")[1];
+          //   setProfileImageBase64(base64String);
+        };
 
-  //       reader.onload = () => {
-  //         resolve(reader.result.split(",")[1]);
-  //         //  const base64String = reader.result.split(",")[1];
-  //         //   setProfileImageBase64(base64String);
-  //       };
+        reader.readAsDataURL(file1);
+      });
+    }
 
-  //       reader.readAsDataURL(file1);
-  //     });
-  //   }
+    // console.log(data);
+    // console.log("IMG:", img);
+    // console.log("Update Form submitted");
 
-  //   // console.log(data);
-  //   // console.log("IMG:", img);
-  //   // console.log("Update Form submitted");
+    try {
+      const newData = {
+        userId: user?._id,
+        desc: data.desc,
+        // img,
+        likes: [],
+      };
+      // console.log(post._id);
 
-  //   try {
-  //     const newData = {
-  //       userId: user?._id,
-  //       desc: data.desc,
-  //       // img,
-  //       likes: [],
-  //     };
-  //     // console.log(post._id);
+      if (file1) {
+        newData.img = img;
+      }
 
-  //     if (file1) {
-  //       newData.img = img;
-  //     }
+      const response = await axios.put(
+        `${process.env.REACT_APP_API_URL}/posts/${post?._id}`,
+        newData,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("userToken")}`,
+          },
+        },
+      );
 
-  //     const response = await axios.put(
-  //       `${process.env.REACT_APP_API_URL}/posts/${post?._id}`,
-  //       newData,
-  //       {
-  //         headers: {
-  //           Authorization: `Bearer ${localStorage.getItem("userToken")}`,
-  //         },
-  //       },
-  //     );
+      if (response.status === 200) {
+        // console.log(response.data);
+        window.location.replace("/home");
+      }
+    } catch (error) {
+      console.log("ERR:", error);
+    }
 
-  //     if (response.status === 200) {
-  //       // console.log(response.data);
-  //       window.location.replace("/home");
-  //     }
-  //   } catch (error) {
-  //     console.log("ERR:", error);
-  //   }
-
-  //   setShowUpdateModal(false);
-  // };
+    setShowUpdateModal(false);
+  };
 
   const handleDelete = async () =>
     // toastId
@@ -103,9 +105,9 @@ const Post = ({ post }) => {
       // console.log(user?._id);
       // Submit data to your Express API here
       try {
-      //   const data = {
-      //     userId: user?._id,
-      //   };
+        //   const data = {
+        //     userId: user?._id,
+        //   };
 
         const response = await axios.delete(
           `${process.env.REACT_APP_API_URL}/posts/delete/${post?._id}`,
@@ -138,7 +140,7 @@ const Post = ({ post }) => {
       setShowDeleteModal(false);
     };
 
-  const showConfirmationAlert = () => {
+  const showConfirmationAlert = (toastId) => {
     toast.custom(
       (t) => (
         <div
@@ -213,11 +215,16 @@ const Post = ({ post }) => {
       },
     );
 
-    // return (
-    // <button type="button" onClick={() => { showConfirmationAlert }}>
-    // Delete
-    // </button>
-    // );
+    return (
+      <button
+        type="button"
+        onClick={() => {
+          showConfirmationAlert;
+        }}
+      >
+        Delete
+      </button>
+    );
   };
 
   // console.log("Post prop:", post);
@@ -250,7 +257,7 @@ const Post = ({ post }) => {
       <div className="postWrapper">
         <div className="postTop">
           <div className="postTopLeft">
-            <User />
+            {/* <User /> */}
             {/* <img
                         className="postProfileImg"
                         src={User.filter((u)=>u._id === post.userId)[0].profilePicture}
@@ -283,7 +290,7 @@ const Post = ({ post }) => {
                       Cancel
                     </button>
                   </div>
-                  <form onSubmit={handleSubmit(handleDelete)}>
+                  <form onSubmit={handleSubmit(handleUpdate())}>
                     <div className="share">
                       <div className="shareWrapper">
                         <div className="shareTop">
@@ -360,7 +367,9 @@ const Post = ({ post }) => {
                           </div>
                           <button
                             type="submit"
-                            onClick={() => setShowUpdateModal(true)}
+                            onClick={() => {
+                              setShowDeleteModal(true);
+                            }}
                             className="shareButton"
                           >
                             Update
@@ -374,6 +383,15 @@ const Post = ({ post }) => {
             )}
 
             <br></br>
+
+            <button
+              type="button"
+              onClick={() => {
+                setShowDeleteModal(true);
+              }}
+            >
+              Delete <MdDelete />
+            </button>
 
             {showDeleteModal && (
               <div className="modal-overlay">
@@ -469,14 +487,14 @@ const Post = ({ post }) => {
               </div>
             )}
 
-            <button
+            {/* <button
               type="button"
               onClick={() => {
                 setShowDeleteModal(true);
               }}
             >
               Delete <MdDelete />
-            </button>
+            </button> */}
           </div>
         </div>
         <div className="postCenter">
@@ -484,13 +502,21 @@ const Post = ({ post }) => {
           {/* <img className="postImg" src={PF + post?.img} alt="" /> */}
           {/* <Link to={`${process.env.REACT_APP_UI_UR}/posts/post/${post?._id}`}> */}
           {/* <SinglePost image_name={post?.desc}> */}
-          <Link to={`${post?._id}`}>
+
+          <Link to={`/post/${post?._id}`}>
             <img
               className="postImg"
               src={`data:image/jpeg;base64,${post?.img}`}
               alt=""
             />
           </Link>
+
+          {/* <img
+              className="postImg"
+              src={`data:image/jpeg;base64,${post?.img}`}
+              alt=""
+            /> */}
+
           {/* {console.log(post?._id)} */}
           {/* </SinglePost> */}
           {/* </Link> */}

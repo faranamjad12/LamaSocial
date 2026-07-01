@@ -48,7 +48,7 @@ authrouter.post("/register", async (req, res) => {
       desc: req.body.desc,
       city: req.body.city,
       from: req.body.from,
-      relationship: 3,
+      relationship: 2,
     });
 
     //save user and respond

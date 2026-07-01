@@ -16,10 +16,10 @@ export const useAuth = () => {
 };
 
 const AuthProvider = ({ children }) => {
-    const [user, setUser] = useState(() => {
-      const savedUser = localStorage.getItem("loggedinUser");
-      return savedUser ? JSON.parse(savedUser) : null;
-    });
+    // const [user, setUser] = useState(() => {
+    //   const savedUser = localStorage.getItem("loggedinUser");
+    //   return savedUser ? JSON.parse(savedUser) : null;
+    // });
 
     const [isLoading, setIsLoading] = useState();
 
@@ -32,14 +32,15 @@ const AuthProvider = ({ children }) => {
   const logout = () => {
     localStorage.removeItem("userToken");
       localStorage.removeItem("loggedinUser");
-      localStorage.removeItem("USER");
-    setUser(null);
+    localStorage.removeItem("USER");
+    localStorage.removeItem("useremail");
+    // setUser(null);
   };
 
   return (
     <AuthContext.Provider
       value={{
-          user,
+          // user,
         logout,
         login,
       }}

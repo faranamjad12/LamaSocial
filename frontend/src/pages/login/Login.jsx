@@ -42,7 +42,10 @@ const Login = () => {
     delete user_Data.user.relationship;
     delete user_Data.user.createdAt;
     delete user_Data.user.updatedAt;
-
+    delete user_Data.user.isOtpVerified;
+    delete user_Data.user.otp;
+    delete user_Data.user.__v;
+    
     localStorage.setItem("USER", JSON.stringify(user_Data));
 
     login(
@@ -93,11 +96,7 @@ const Login = () => {
                   </button>
 
                   <span className="loginForgot">
-                    <Link
-                    to={"/forgot-password"}
-                    >
-                      Forgot Password?
-                    </Link>
+                    <Link to={"/forgot-password"}>Forgot Password?</Link>
                   </span>
 
                   <button
