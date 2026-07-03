@@ -98,9 +98,8 @@ const Post = ({ post }) => {
     setShowUpdateModal(false);
   };
 
-  const handleDelete = async () =>
-    // toastId
-    {
+  const handleDelete = async () =>{
+     
       // e.preventDefault();
       // console.log(user?._id);
       // Submit data to your Express API here
@@ -130,6 +129,8 @@ const Post = ({ post }) => {
 
           // Execute your destructive action here
           toast.success("Post successfully deleted!");
+
+          
 
           window.location.replace("/home");
         }
@@ -257,7 +258,7 @@ const Post = ({ post }) => {
       <div className="postWrapper">
         <div className="postTop">
           <div className="postTopLeft">
-            {/* <User /> */}
+             <User /> 
             {/* <img
                         className="postProfileImg"
                         src={User.filter((u)=>u._id === post.userId)[0].profilePicture}
@@ -290,7 +291,7 @@ const Post = ({ post }) => {
                       Cancel
                     </button>
                   </div>
-                  <form onSubmit={handleSubmit(handleUpdate())}>
+                  <form onSubmit={handleSubmit(handleUpdate)}>
                     <div className="share">
                       <div className="shareWrapper">
                         <div className="shareTop">
@@ -368,7 +369,7 @@ const Post = ({ post }) => {
                           <button
                             type="submit"
                             onClick={() => {
-                              setShowDeleteModal(true);
+                              setShowUpdateModal(true);
                             }}
                             className="shareButton"
                           >
