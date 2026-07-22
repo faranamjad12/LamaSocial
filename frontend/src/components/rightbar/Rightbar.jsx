@@ -17,9 +17,16 @@ export default function Rightbar({ profile }) {
         <img className="rightbarAd" src="assets/ad.png" alt="" />
         <h4 className="rightbarTitle">Online Friends</h4>
         <ul className="rightbarFriendList">
-          {Users.map((u,i) => (
-            <Online key={u._id} index={i} user={u} />
-          ))}
+          {Users.map((u, i) => {
+            return (
+            // <>
+              <div key={i}>
+                <Online key={u._id}
+                  // index={i}
+                  user={u} />
+                </div>
+              // </>
+          )})}
         </ul>
       </>
     )

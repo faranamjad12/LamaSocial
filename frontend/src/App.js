@@ -16,7 +16,12 @@ import ProtectedRoute from "./utils/ProtectedRoute";
 // function App() {
 const App = () => {
   return (
-    <Router>
+    <Router
+      future={{
+        v7_startTransition: true,
+        v7_relativeSplatPath: true,
+      }}
+    >
       <Routes>
         <Route path="/login" element={<Login />} />
         <Route path="/" element={<Navigate to="/login" replace />} />
@@ -39,7 +44,7 @@ const App = () => {
           
         </Route> */}
         {/* <Route path="/f" */}
-        
+
         <Route path="/register" element={<Register />} />
         <Route path="/forgot-password" element={<Forgot_Password />} />
         <Route path="/reset-password" element={<Reset_Password />} />

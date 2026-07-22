@@ -10,7 +10,6 @@ import User from "../user/User";
 // dotenv.config();
 
 export default function Feed({ posts }) {
-  
   // const [posts, setPosts] = useState([]);
 
   // useEffect(() => {
@@ -29,9 +28,14 @@ export default function Feed({ posts }) {
       {/* <input type="text" onChange={e=>setText(e.target.value)} /> */}
       <div className="feedWrapper">
         <Share />
-        {posts.map((p,i) => (
-          <Post key={i} post={p} />
-        ))}
+        {posts.map((p, i) => {
+          return(
+          // <>
+            <div key={i}>
+              <Post post={p} />
+            </div>
+          // </>
+        )})}
         {/* <Post post={posts} /> */}
       </div>
     </div>

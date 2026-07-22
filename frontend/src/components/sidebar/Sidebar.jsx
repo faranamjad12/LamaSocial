@@ -58,12 +58,17 @@ const Sidebar=()=> {
         <button className="sidebarButton">Show More</button>
         <hr className="sidebarHr" />
         <ul className="sidebarFriendList">
-          {Users.map((u,i) => (
-            <CloseFriend
-              key={u._id}
-              index={i}
-              user={u} />
-          ))}
+          {Users.map((u, i) => {
+            return (
+            // <>
+              <div key={i}>
+                <CloseFriend
+                  key={u._id}
+                  index={i}
+                  user={u} />
+              </div>
+            // </>
+)})}
         </ul>
       </div>
     </div>
